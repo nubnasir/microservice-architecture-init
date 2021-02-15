@@ -24,18 +24,23 @@ public class SellerServiceImpl implements SellerService {
 
     @Transactional(readOnly = true)
     @Override
-    public SellerInfo getSellerInfo(Long id) {
+    public Response<SellerInfo> getSellerInfo(Long id) {
+        Response<SellerInfo> response = new Response();
         try {
             Seller seller = sellerRepository.getOne(id);
             if (seller != null) {
                 log.trace(id + " data accessed successfully");
-                return new SellerInfo(seller.getName(), seller.getAddress());
+                response.setCode(ResponseCode.SUCCESS.getCode());
+                response.setPayload(new SellerInfo(seller.getName(), seller.getAddress()));
+                return response;
             }
         } catch (javax.persistence.EntityNotFoundException exc){
             log.error(id + " data accessed failed");
         }
 
-        return new SellerInfo("N/A", "N/A");
+        response.setCode(ResponseCode.NO_DATA.getCode());
+        response.setMessage(ResponseMessage.NO_DATA.getMessage());
+        return response;
     }
 
     @Transactional
@@ -48,6 +53,6 @@ public class SellerServiceImpl implements SellerService {
 
         sellerRepository.save(seller);
         log.trace(name + " " + address + " data created successfully");
-        return new Response(ResponseCode.SUCCESS.getCode(), ResponseMessage.SUCCESS.getMessage());
+        return new Response(ResponseCode.SUCCESS.getCode(), ResponseMessage.SUCCESS.getMessage(), null);
     }
 }

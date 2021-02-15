@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ResponseCode {
     SUCCESS(200),
-    FAILED(500);
+    FAILED(201),
+    NO_DATA(202);
     private Integer code;
 }

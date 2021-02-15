@@ -17,7 +17,7 @@ public class SellerResource extends BaseResource{
     }
 
     @GetMapping("/info/{id}")
-    public SellerInfo getSellerInfo(@PathVariable("id") Long id){
+    public Response<SellerInfo> getSellerInfo(@PathVariable("id") Long id){
         return sellerService.getSellerInfo(id);
     }
 
