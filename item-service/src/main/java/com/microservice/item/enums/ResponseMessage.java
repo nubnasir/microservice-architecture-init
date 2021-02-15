@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ResponseMessage {
     SUCCESS("Successful"),
-    FAILED("Failed");
+    FAILED("Failed"),
+    NO_DATA("No data found");
     private String message;
 }
