@@ -15,6 +15,11 @@ public class RestTemplateHelper {
     }
 
     public static Response getBody(RestTemplate restTemplate, String url, Object data, ParameterizedTypeReference parameterizedTypeReference){
+        ResponseEntity<Response> responseEntity = restTemplate.exchange(url, HttpMethod.GET, getHttpEntityRequest(data), parameterizedTypeReference);
+        return responseEntity.getBody();
+    }
+
+    public static Response postBody(RestTemplate restTemplate, String url, Object data, ParameterizedTypeReference parameterizedTypeReference){
         ResponseEntity<Response> responseEntity = restTemplate.exchange(url, HttpMethod.POST, getHttpEntityRequest(data), parameterizedTypeReference);
         return responseEntity.getBody();
     }

@@ -10,7 +10,7 @@ public enum ResponseCode {
     SUCCESS(200),
     FAILED(201),
     NO_DATA(202);
-    private Integer code;
+    private int code;
 
     public static boolean isSuccess(Response response){
         return response.getCode() == ResponseCode.SUCCESS.getCode();

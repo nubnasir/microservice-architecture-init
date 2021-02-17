@@ -18,7 +18,7 @@ public class ItemResource extends BaseResource {
     }
 
     @GetMapping("/info/{id}")
-    public ItemInfo getSellerInfo(@PathVariable("id") Long id){
+    public Response<ItemInfo> getSellerInfo(@PathVariable("id") Long id){
         return itemService.getItemInfo(id);
     }
 
