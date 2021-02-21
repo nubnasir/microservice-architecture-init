@@ -94,7 +94,8 @@ public class OAuth2Config  extends AuthorizationServerConfigurerAdapter {
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints
                 .authenticationManager(authenticationManager)
-                .userDetailsService(userDetailsService);
+                .userDetailsService(userDetailsService)
+                .pathMapping("/oauth/token", "/token");
     }
 
 }
