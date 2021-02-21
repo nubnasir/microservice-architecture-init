@@ -12,7 +12,7 @@ public class DatasourceConfig {
     @Bean
     public DataSource dataSource(){
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.driverClassName("com.mysql.jdbc.Driver");
+        dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver");
         dataSourceBuilder.url("jdbc:mysql://localhost:3306/authorization_db");
         dataSourceBuilder.username("myuser");
         dataSourceBuilder.password("User@123");

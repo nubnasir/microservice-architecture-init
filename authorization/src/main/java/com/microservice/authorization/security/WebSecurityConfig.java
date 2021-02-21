@@ -77,13 +77,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         }*/
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        auth.inMemoryAuthentication()
-                .withUser("user1")
-                    .password(encoder.encode("user1"))
-                    .roles("USER")
-                .and()
-                .withUser("admin1")
-                    .password(encoder.encode("admin1"))
-                    .roles("USER", "ADMIN");
+        auth.jdbcAuthentication().dataSource(dataSource)
+                .passwordEncoder(encoder)
+                .rolePrefix("ROLE_")
+                .usersByUsernameQuery("select user_name, user_password, enable from user where user_name=?")
+                .authoritiesByUsernameQuery("select user_name, user_scope from user where user_name=?");
     }
 }

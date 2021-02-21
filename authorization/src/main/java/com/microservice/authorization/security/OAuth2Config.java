@@ -1,6 +1,5 @@
 package com.microservice.authorization.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,6 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+
+import javax.sql.DataSource;
 
 /*-- Tables for OAuth token store
 
@@ -70,24 +71,20 @@ public class OAuth2Config  extends AuthorizationServerConfigurerAdapter {
 
     private AuthenticationManager authenticationManager;
     private UserDetailsService userDetailsService;
+    private DataSource dataSource;
 
-    @Autowired
-    public OAuth2Config(AuthenticationManager authenticationManager, UserDetailsService userDetailsService) {
+    public OAuth2Config(AuthenticationManager authenticationManager, UserDetailsService userDetailsService, DataSource dataSource) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
+        this.dataSource = dataSource;
     }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        clients.inMemory()
-                .withClient("org_sys")
-                .secret(encoder.encode("secret"))
-                .authorizedGrantTypes(
-                        "refresh_token",
-                        "password",
-                        "client_credentials"
-                ).scopes("webclient", "mobileclient");
+        clients.jdbc(dataSource)
+                .passwordEncoder(encoder)
+                .build();
     }
 
     @Override
